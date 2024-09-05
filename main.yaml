@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+    LgorelikTestGitSync:
+        Type: 'AWS::CloudFormation::StackSet'
+        DeletionPolicy: Retain
+        Properties:
+          StackSetName: LgorelikTestGitSync
+          Description: Testing git sync
+          PermissionModel: SELF_MANAGED
+          ManagedExecution:
+            Active: true
+          Tags:
+            - Key: Owner
+              Value: lgorelik
+          StackInstancesGroup:
+            - DeploymentTargets:
+                Accounts:
+                  - '747187558802'
+                  - '246099418683'
+              Regions:
+                - us-east-1
+          TemplateBody: |
+            "InstanceSecurityGroup" : {
+                "Type" : "AWS::EC2::SecurityGroup",
+                "Properties" : {
+                    "GroupDescription" : "Lgorelik test git sync",
+                    "SecurityGroupEgress" : [{
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 80,
+                        "ToPort" : 80,
+                        "CidrIp" : "0.0.0.0/0"
+                    }]
+                }
+            }
